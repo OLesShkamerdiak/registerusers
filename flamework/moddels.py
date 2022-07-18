@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 import json
 
 
+# батьківський клас
+
 class Model(ABC):
     file = 'default.json'
 
@@ -16,7 +18,7 @@ class Model(ABC):
         return get_dict
 
     @classmethod
-    def get_by_id(cls, email, password):
+    def get_by_id(cls, email, password=None):
         data = cls.get_file_data(cls.file)
         use = []
         for user in data:
@@ -26,6 +28,23 @@ class Model(ABC):
             print(use)
         else:
             raise Exception(str("User not found"))
+
+    @classmethod
+    def get_by_cars(cls, email,):
+        data_cars = cls.get_file_data(cls.file)
+        data_user = cls.get_file_data(file_name="user.json")
+        for user in data_user:
+            if user['email'] == email:
+                use1 = []
+                for user_car in data_cars:
+                    if user_car["email"] == email:
+                        use1.append(user_car)
+                if use1:
+                    print(use1)
+                else:
+                    raise Exception(str("Users car not found"))
+            else:
+                raise Exception(str("User not found"))
 
 
     @classmethod
@@ -45,5 +64,3 @@ class Model(ABC):
         file = open('database/' + self.file, "w")
         file.write(data)
         file.close()
-
-
